@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RixzAI - ChatGPT Style</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg: #212121;
+  --card: #2f2f2f;
+  --bd: rgba(255, 255, 255, 0.1);
+  --txt: #ececec;
+  --mut: #b4b4b4;
+  --btn: #2f2f2f;
+  --bub-me: #303030;
+  --bub-ai: transparent;
+  --accent: #10a37f;
+}
+@media(prefers-color-scheme:light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #ffffff;
+    --card: #f9f9f9;
+    --bd: rgba(0, 0, 0, 0.1);
+    --txt: #0d0d0d;
+    --mut: #676767;
+    --btn: #f4f4f4;
+    --bub-me: #f4f4f4;
+    --bub-ai: transparent;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --card: #f9f9f9;
+  --bd: rgba(0, 0, 0, 0.1);
+  --txt: #0d0d0d;
+  --mut: #676767;
+  --btn: #f4f4f4;
+  --bub-me: #f4f4f4;
+  --bub-ai: transparent;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--bd); }
+.ib { width: 36px; height: 36px; border: 0; border-radius: 8px; background: transparent; color: var(--txt); display: grid; place-items: center; cursor: pointer; }
+.ib:hover { background: var(--btn); }
+.brand-title { font-weight: 600; font-size: 18px; letter-spacing: -0.02em; }
+.sp { flex: 1; }
+
+#chat { flex: 1; overflow-y: auto; padding: 20px 16px; }
+.wrap { max-width: 760px; margin: 0 auto; }
+
+/* Landing / Hero Awal Ala ChatGPT TikTok */
+.hero { text-align: center; padding-top: 40px; margin-bottom: 20px; }
+.logo-circle { width: 56px; height: 56px; border-radius: 50%; border: 1px solid var(--bd); background: var(--card); margin: 0 auto 16px; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.logo-circle svg { width: 28px; height: 28px; fill: currentColor; stroke: none; }
+h1 { font-size: 26px; font-weight: 600; margin: 0 0 24px; letter-spacing: -0.02em; }
+
+/* Grid Cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; text-align: left; }
+.cd { border: 1px solid var(--bd); background: var(--bg); border-radius: 16px; padding: 14px 16px; color: var(--txt); font: inherit; cursor: pointer; text-align: left; transition: all 0.2s ease; }
+.cd:hover { background: var(--card); border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
+.cd b { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.cd span { color: var(--mut); font-size: 13px; line-height: 1.4; display: block; }
+
+/* Chat Bubbles */
+.msg { display: flex; margin: 16px 0; gap: 12px; }
+.msg.me { justify-content: flex-end; }
+.bub { max-width: 88%; padding: 12px 18px; border-radius: 20px; line-height: 1.6; font-size: 15px; overflow-wrap: anywhere; background: var(--bub-ai); }
+.me .bub { background: var(--bub-me); border-radius: 20px; }
+.bub p { margin: 0 0 8px; }
+.bub p:last-child { margin: 0; }
+.bub ul, .bub ol { margin: 4px 0 8px; padding-left: 20px; }
+.bub code { background: rgba(127,127,120,0.25); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13.5px; }
+.bub pre { background: #161616; color: #e0e0e0; padding: 14px; border-radius: 12px; overflow-x: auto; margin: 10px 0; font-family: monospace; border: 1px solid var(--bd); }
+.bub pre code { background: none; padding: 0; color: inherit; }
+
+/* Footer Input Capsule */
+footer { padding: 12px 16px; }
+.box { max-width: 760px; margin: 0 auto; display: flex; gap: 8px; align-items: flex-end; background: var(--card); border: 1px solid var(--bd); border-radius: 26px; padding: 8px 12px 8px 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+textarea { flex: 1; border: 0; outline: 0; resize: none; background: none; color: var(--txt); font: inherit; font-size: 15px; max-height: 150px; padding: 6px 0; }
+textarea::placeholder { color: var(--mut); }
+#send { width: 38px; height: 38px; border: 0; border-radius: 50%; background: var(--txt); color: var(--bg); display: grid; place-items: center; cursor: pointer; flex: none; transition: opacity 0.15s; }
+#send:disabled { opacity: 0.25; cursor: default; }
+.note { max-width: 760px; margin: 8px auto 0; text-align: center; color: var(--mut); font-size: 12px; }
+
+/* Sidebar Drawer */
+#bd { position: fixed; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: .2s; z-index: 9; }
+#dr { position: fixed; top: 0; bottom: 0; left: 0; width: 260px; max-width: 80%; background: var(--bg); border-right: 1px solid var(--bd); transform: translateX(-100%); transition: .22s; z-index: 10; display: flex; flex-direction: column; padding: calc(14px + env(safe-area-inset-top,0px)) 12px calc(14px + env(safe-area-inset-bottom,0px)); }
+body.open #dr { transform: none; }
+body.open #bd { opacity: 1; pointer-events: auto; }
+#dr h3 { margin: 4px 6px 12px; font-size: 15px; font-weight: 600; }
+.nw { border: 1px solid var(--bd); background: none; color: var(--txt); border-radius: 10px; padding: 10px; font: inherit; cursor: pointer; margin-bottom: 12px; text-align: left; display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.nw:hover { background: var(--card); }
+#list { flex: 1; overflow-y: auto; }
+.it { display: flex; align-items: center; gap: 6px; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+.it:hover, .it.on { background: var(--btn); }
+.it span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.it button { border: 0; background: none; color: var(--mut); cursor: pointer; padding: 2px; }
+.empty { color: var(--mut); font-size: 13px; padding: 8px; }
+.me2 { border-top: 1px solid var(--bd); padding-top: 12px; font-size: 13px; color: var(--mut); display: flex; align-items: center; gap: 8px; }
+.me2 span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.me2 button { border: 1px solid var(--bd); background: none; color: var(--txt); border-radius: 6px; padding: 4px 8px; font: inherit; cursor: pointer; }
+
+/* Login */
+#lg { position: fixed; inset: 0; z-index: 20; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+#lg.off { display: none; }
+#lg p { color: var(--mut); max-width: 320px; line-height: 1.6; margin: 0 0 24px; font-size: 14px; }
+#gbtn { display: flex; align-items: center; gap: 10px; background: #fff; color: #111; border: 0; border-radius: 999px; padding: 12px 24px; font: inherit; font-weight: 600; font-size: 15px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+#lerr { color: #e5604d; font-size: 13px; margin-top: 14px; min-height: 18px; }
+</style>
+</head>
+<body>
+<div id="lg">
+  <div class="logo-circle"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+  <h1>RixzAI</h1>
+  <p>Masuk dengan akun Google untuk memulai percakapan AI 2026.</p>
+  <button id="gbtn">Daftar / Masuk dengan Google</button>
+  <div id="lerr"></div>
+</div>
+
+<header>
+  <button class="ib" id="menu" aria-label="Riwayat chat"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  <div class="brand-title">RixzAI</div>
+  <div class="sp"></div>
+  <button class="ib" id="theme" aria-label="Tema"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+  <button class="ib" id="del" aria-label="Hapus chat ini"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 10v6M14 10v6"/></svg></button>
+</header>
+
+<main id="chat"><div class="wrap" id="w"></div></main>
+
+<footer>
+  <div class="box">
+    <textarea id="in" rows="1" placeholder="Ketik pesan untuk RixzAI..."></textarea>
+    <button id="send" aria-label="Kirim"><svg viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M3 20.5v-6.8l11-1.7-11-1.7V3.5L22 12z"/></svg></button>
+  </div>
+  <div class="note">RixzAI bisa keliru. Selalu verifikasi kode &amp; data penting. (Informasi 2026)</div>
+</footer>
+
+<div id="bd"></div>
+<aside id="dr">
+  <h3>Riwayat Percakapan</h3>
+  <button class="nw" id="nw">+ Chat baru</button>
+  <div id="list"></div>
+  <div class="me2"><span id="uname"></span><button id="out">Keluar</button></div>
+</aside>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig={apiKey:"ISI_API_KEY_FIREBASE",authDomain:"ISI.firebaseapp.com",projectId:"ISI",appId:"ISI"};
+
+const auth=getAuth(initializeApp(firebaseConfig));
+const $=id=>document.getElementById(id),W=$('w'),chatEl=$('chat'),inp=$('in'),btn=$('send'),TK='rixzai:theme';
+
+const CARDS=[
+  ['Pemrograman & Coding','Script & debugging JS/Python/HTML','Bikin script Fetch API async JavaScript lengkap dengan penanganan error'],
+  ['Informasi & Tren 2026','Teknologi & AI terkini tahun 2026','Apa perkembangan utama teknologi AI dan software engineering di 2026?'],
+  ['Pelajaran Sekolah','Soal & penjelasan materi bertahap','Jelaskan konsep turunan dan integral kalkulus secara rinci dan simpel'],
+  ['Kisaran Harga 2026','Estimasi gadget & hardware','Berapa estimasi kisaran harga laptop/PC rakitan untuk coding di 2026?']
+];
+
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+
+function md(t){
+  let escaped = esc(t);
+  escaped = escaped.replace(/```(\w+)?\n([\s\S]*?)```/g, (m, lang, code) => `<pre><code>${code.trim()}</code></pre>`);
+  
+  const inl = s => s.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`(.+?)`/g,'<code>$1</code>');
+  let o='', ls=null, m;
+  const cl=()=>{if(ls){o+='</'+ls+'>';ls=null}};
+
+  for(const l of escaped.split('\n')){
+    if(l.startsWith('<pre>') || l.startsWith('</pre>')) { cl(); o += l; continue; }
+    if(m=l.match(/^\s*[-*•]\s+(.*)/)){if(ls!=='ul'){cl();o+='<ul>';ls='ul'}o+='<li>'+inl(m[1])+'</li>'}
+    else if(m=l.match(/^\s*\d+[.)]\s+(.*)/)){if(ls!=='ol'){cl();o+='<ol>';ls='ol'}o+='<li>'+inl(m[1])+'</li>'}
+    else if(!l.trim())cl();
+    else{cl();o+='<p>'+(/^#+\s/.test(l)?'<b>'+inl(l.replace(/^#+\s*/,''))+'</b>':inl(l))+'</p>'}
+  }
+  cl();
+  return o;
+}
+
+let user=null,chats=[],cur=null,busy=false,K='';
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(chats.slice(0,50)))}catch(e){}};
+const get=()=>chats.find(c=>c.id===cur);
+
+function bubble(role,html){
+  const d=document.createElement('div');
+  d.className='msg '+(role==='user'?'me':'ai');
+  const b=document.createElement('div');
+  b.className='bub';
+  b.innerHTML=html;
+  d.appendChild(b);
+  W.appendChild(d);
+  chatEl.scrollTop=chatEl.scrollHeight;
+  return b;
+}
+
+function render(){
+  W.innerHTML='';
+  const c=get();
+  if(!c||!c.msgs.length){
+    W.innerHTML='<div class="hero"><div class="logo-circle"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div><h1>Apa yang bisa saya bantu hari ini?</h1><div class="cards"></div></div>';
+    const g=W.querySelector('.cards');
+    CARDS.forEach(([t,s,q])=>{
+      const b=document.createElement('button');
+      b.className='cd';
+      b.innerHTML='<b>'+t+'</b><span>'+s+'</span>';
+      b.onclick=()=>ask(q);
+      g.appendChild(b);
+    });
+  } else {
+    c.msgs.forEach(m=>bubble(m.role,md(m.content)));
+  }
+  list();
+}
+
+function list(){
+  const L=$('list');L.innerHTML='';
+  if(!chats.length){L.innerHTML='<div class="empty">Belum ada riwayat.</div>';return}
+  chats.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='it'+(c.id===cur?' on':'');
+    d.innerHTML='<span></span><button aria-label="Hapus">✕</button>';
+    d.firstChild.textContent=c.title;
+    d.onclick=()=>{cur=c.id;render();document.body.classList.remove('open')};
+    d.lastChild.onclick=e=>{e.stopPropagation();rm(c.id)};
+    L.appendChild(d);
+  });
+}
+
+function rm(id){chats=chats.filter(c=>c.id!==id);save();if(id===cur)cur=null;render()}
+
+async function ask(text){
+  text=(text||'').trim();if(!text||busy||!user)return;
+  let c=get();
+  if(!c){c={id:Date.now().toString(36),title:text.slice(0,40),msgs:[]};chats.unshift(c);cur=c.id}
+  c.msgs.push({role:'user',content:text});
+  render();inp.value='';inp.style.height='auto';
+  const b=bubble('ai','<i style="color:var(--mut)">Sedang berpikir…</i>');
+  busy=true;btn.disabled=true;
+  try{
+    const idToken=await user.getIdToken();
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken,messages:c.msgs})});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok||!d.text)throw new Error(d.error||'gagal');
+    c.msgs.push({role:'assistant',content:d.text});save();b.innerHTML=md(d.text);
+  }catch(e){
+    c.msgs.pop();save();b.innerHTML='<p>Gagal mengambil respon. Coba kirim ulang.</p>';
+  }
+  busy=false;btn.disabled=false;list();
+}
+
+btn.onclick=()=>ask(inp.value);
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask(inp.value)}});
+inp.addEventListener('input',()=>{inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,150)+'px'});
+
+$('menu').onclick=()=>document.body.classList.add('open');
+$('bd').onclick=()=>document.body.classList.remove('open');
+$('nw').onclick=()=>{cur=null;render();document.body.classList.remove('open')};
+$('del').onclick=()=>{if(cur)rm(cur)};
+$('theme').onclick=()=>{const r=document.documentElement,light=r.dataset.theme?r.dataset.theme==='light':matchMedia('(prefers-color-scheme:light)').matches;const n=light?'dark':'light';r.dataset.theme=n;try{localStorage.setItem(TK,n)}catch(e){}};
+try{const t=localStorage.getItem(TK);if(t)document.documentElement.dataset.theme=t}catch(e){}
+
+$('gbtn').onclick=async()=>{$('lerr').textContent='';try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){$('lerr').textContent='Login dibatalkan/gagal.'}};
+$('out').onclick=()=>{document.body.classList.remove('open');signOut(auth)};
+
+onAuthStateChanged(auth,u=>{
+  user=u;
+  if(u){K='rixzai:'+u.uid;try{chats=JSON.parse(localStorage.getItem(K))||[]}catch(e){chats=[]}cur=null;$('uname').textContent=u.displayName||u.email||'Akun Google';$('lg').classList.add('off');render()}
+  else{chats=[];cur=null;$('lg').classList.remove('off')}
+});
+</script>
+</body>
+</html>
